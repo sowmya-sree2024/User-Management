@@ -14,7 +14,6 @@ const App = () => {
     mobile: '',
     dob: ''
   });
-
   const [errors, setErrors] = useState({});
   const [users, setUsers] = useState([]);
   const [showCard, setShowCard] = useState(false);
