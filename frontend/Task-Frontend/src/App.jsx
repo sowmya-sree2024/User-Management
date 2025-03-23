@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Container, TextField, Button, Card, CardContent,
-  Typography, Box, Table, TableBody, TableCell,
-  TableContainer, TableHead, TableRow, Paper, IconButton
+  Container, TextField, Button, Card, Typography, Box, IconButton, Grid, Divider
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
@@ -54,7 +52,7 @@ const App = () => {
     if (!validate()) return;
 
     try {
-      const response = await axios.post('http://localhost:3000/user/', user);
+      await axios.post('http://localhost:3000/user/', user);
       alert('User registered successfully');
       setUser({ fullName: '', email: '', mobile: '', dob: '' });
       setErrors({});
@@ -160,8 +158,9 @@ const App = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '90%',
-            maxWidth: '900px',
+            width: '95%',
+            maxHeight: '90vh',
+            overflowY: 'auto',
             backgroundColor: 'white',
             boxShadow: '0px 6px 15px rgba(0,0,0,0.4)',
             borderRadius: '12px',
@@ -169,43 +168,66 @@ const App = () => {
             p: 3
           }}
         >
-          <Card sx={{ width: '100%', overflow: 'hidden' }}>
-            <CardContent>
-              <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="h5" color="green">Registered Users</Typography>
-                <IconButton onClick={() => setShowCard(false)}>
-                  <CloseIcon />
-                </IconButton>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Typography variant="h5" color="#7a0785">Registered Users</Typography>
+            <IconButton onClick={() => setShowCard(false)}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          {users.length === 0 ? (
+            <Typography>No users found</Typography>
+          ) : (
+            <Box>
+              {/* Headers */}
+              <Box
+                sx={{
+                  backgroundColor: '#7a0785',
+                  color: 'white',
+                  display: 'flex',
+                  p: 2,
+                  borderRadius: 1,
+                  fontWeight: 'bold'
+                }}
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={3}>Name</Grid>
+                  <Grid item xs={3}>Email</Grid>
+                  <Grid item xs={3}>Mobile</Grid>
+                  <Grid item xs={3}>DOB</Grid>
+                </Grid>
               </Box>
 
-              {users.length === 0 ? (
-                <Typography>No users found</Typography>
-              ) : (
-                <TableContainer component={Paper}>
-                  <Table stickyHeader>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell sx={{ backgroundColor: "brown", color: 'white' }}><b>Name</b></TableCell>
-                        <TableCell sx={{ backgroundColor: "brown", color: 'white' }}><b>Email</b></TableCell>
-                        <TableCell sx={{ backgroundColor: "brown", color: 'white' }}><b>Mobile</b></TableCell>
-                        <TableCell sx={{ backgroundColor: "brown", color: 'white' }}><b>DOB</b></TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {users.map((user, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{user.fullName}</TableCell>
-                          <TableCell>{user.email}</TableCell>
-                          <TableCell>{user.mobile}</TableCell>
-                          <TableCell>{user.dob}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              )}
-            </CardContent>
-          </Card>
+              {/* Divider */}
+              <Divider sx={{ my: 1 }} />
+
+              {/* Rows */}
+              {users.map((user, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    backgroundColor: index % 2 === 0 ? '#f1f8e9' : '#e8f5e9',
+                    p: 2,
+                    borderRadius: 1,
+                    mb: 1
+                  }}
+                >
+                  <Grid container spacing={2}>
+                    <Grid item xs={3}>{user.fullName}</Grid>
+                    <Grid item xs={3}>{user.email}</Grid>
+                    <Grid item xs={3}>{user.mobile}</Grid>
+                    <Grid item xs={3}>{user.dob}</Grid>
+                  </Grid>
+                </Box>
+              ))}
+            </Box>
+          )}
+
+          <Box display="flex" justifyContent="flex-end" mt={3}>
+            <Button variant="contained" color="#7a0785" onClick={() => setShowCard(false)}>
+              Back to Registration
+            </Button>
+          </Box>
         </Box>
       )}
     </Box>
