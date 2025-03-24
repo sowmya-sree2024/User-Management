@@ -68,6 +68,7 @@ const App = () => {
       setShowCard(true);
     } catch (error) {
       alert('Error fetching users');
+      console.log('Error in Getting USers')
     }
   };
 
